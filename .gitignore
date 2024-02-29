@@ -1,0 +1,104 @@
+.direnv
+
+# typst auto compiler output
+template.pdf
+theorems.pdf
+template_rendu.pdf
+# MATLAB
+# Windows default autosave extension
+*.asv
+# OSX / *nix default autosave extension
+*.m~
+# Compiled MEX binaries (all platforms)
+*.mex*
+# Packaged app and toolbox files
+*.mlappinstall
+*.mltbx
+# Generated helpsearch folders
+helpsearch*/
+# Simulink code generation folders
+slprj/
+sccprj/
+# Matlab code generation folders
+codegen/
+# Simulink autosave extension
+*.autosave
+# Simulink cache files
+*.slxc
+# Octave session info
+octave-workspace
+
+
+# Coq
+.*.aux
+.*.d
+#*.a
+*.cma
+*.cmi
+*.cmo
+*.cmx
+*.cmxa
+*.cmxs
+*.glob
+*.ml.d
+*.ml4.d
+*.mlg.d
+*.mli.d
+*.mllib.d
+*.mlpack.d
+*.native
+*.o
+*.v.d
+*.vio
+*.vo
+*.vok
+*.vos
+.coq-native
+.csdp.cache
+.lia.cache
+.nia.cache
+.nlia.cache
+.nra.cache
+csdp.cache
+lia.cache
+nia.cache
+nlia.cache
+nra.cache
+native_compute_profile_*.data
+
+# generated timing files
+*.timing.diff
+*.v.after-timing
+*.v.before-timing
+*.v.timing
+time-of-build-after.log
+time-of-build-before.log
+time-of-build-both.log
+time-of-build-pretty.log
+
+
+# Java
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+replay_pid*
