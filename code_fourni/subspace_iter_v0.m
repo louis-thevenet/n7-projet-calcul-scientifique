@@ -28,9 +28,8 @@ function [ V, D, it, flag ] = subspace_iter_v0( A, m, eps, maxit )
     k = 0;
 
     % on génère un ensemble initial de m vecteurs orthogonaux
-    Q = mgs(A);
+    V = mgs(rand(n,m));
 
-    V = Q(:, 1:m);
 
     % rappel : conv = invariance du sous-espace V : ||AV - VH||/||A|| <= eps
     while (~conv && k < maxit)
@@ -44,8 +43,8 @@ function [ V, D, it, flag ] = subspace_iter_v0( A, m, eps, maxit )
         H = V' * Y;
 
         % vérification de la convergence
-        acc = norm(A*V - V*H) / norm(A);
-        conv = acc <= eps;
+        acc = norm(A*V - V*H, "fro") / normA;
+        conv = (acc <= eps);
 
         % orthonormalisation
         V = mgs(Y);
