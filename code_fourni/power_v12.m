@@ -52,12 +52,13 @@ function [ V, D, n_ev, itv, flag ] = power_v11( A, m, percentage, eps, maxit )
         norme = norm(beta*v - z, 2)/norm(beta,2);
         nb_it = 1;
 
+        
         while(norme > eps && nb_it < maxit)
-          y = A*v;
-          v = y / norm(y,2);
+          beta_old = beta;
+          v = z/norm(z, 2);
           z = A*v;
-          beta = v'*z;
-          norme = norm(beta*v - z, 2)/norm(beta,2);
+          beta = (v'*z)/(v'*v);
+          norme = abs(beta-beta_old)/abs(beta_old);
           nb_it = nb_it + 1;
         end
 
