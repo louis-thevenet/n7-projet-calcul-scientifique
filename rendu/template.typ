@@ -1,4 +1,6 @@
- #let column_names(topic, names) = {
+#import "@preview/codelst:2.0.1": sourcecode
+
+#let column_names(topic, names) = {
   topic += if names.len() > 1 { "s" } else { "" } + " : "
   if names.len() == 0 {
     return
@@ -22,7 +24,7 @@
 ) = {
   set document(author: authors, title: title)
   set page(numbering: "1", number-align: center)
-  set text(font: "New Computer Modern", lang: "fr")
+  set text(font: "New Computer Modern", lang: "en")
   set heading(numbering: "1.1.")
   show math.equation: set text(weight: 400)
 
