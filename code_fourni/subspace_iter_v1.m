@@ -54,7 +54,7 @@ function [ V, D, n_ev, it, itv, flag ] = subspace_iter_v1( A, m, percentage, eps
         k = k+1;
         %% Y <- A*V
         Y = A*Vr;
-        %% orthogonalisation
+        %% orthonormalisation
         Vr = mgs(Y);
         
         %% Projection de Rayleigh-Ritz
@@ -62,9 +62,9 @@ function [ V, D, n_ev, it, itv, flag ] = subspace_iter_v1( A, m, percentage, eps
         
         %% Quels vecteurs ont convergé à cette itération
         analyse_cvg_finie = 0;
-        % nombre de vecteurs ayant convergé à cette itération
+        %% nombre de vecteurs ayant convergé à cette itération
         nbc_k = 0;
-        % nb_c est le dernier vecteur à avoir convergé à l'itération précédente
+        %% nb_c est le dernier vecteur à avoir convergé à l'itération précédente
         i = nb_c + 1;
         
         while(~analyse_cvg_finie)
