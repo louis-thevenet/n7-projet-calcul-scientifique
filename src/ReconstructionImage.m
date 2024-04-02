@@ -1,5 +1,5 @@
 
-3%%  Application de la SVD : compression d'images
+%%  Application de la SVD : compression d'images
 
 clear all
 close all
@@ -23,47 +23,48 @@ l = min(p,q);
 % On choisit de ne considérer que 200 vecteurs
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% vecteur pour stocker la différence entre l'image et l'image reconstruite
-%inter = 1:40:(200+40);
-%inter(end) = 200;
-%differenceSVD = zeros(size(inter,2), 1);
-%
-%% images reconstruites en utilisant de 1 à 200 vecteurs (avec un pas de 40)
-%ti = 0;
-%td = 0;
-%for k = inter
-%
-%    % Calcul de l'image de rang k
-%    Im_k = U(:, 1:k)*S(1:k, 1:k)*V(:, 1:k)';
-%
-%    % Affichage de l'image reconstruite
-%    ti = ti+1;
-%    figure(ti)
-%    colormap('gray')
-%    imagesc(Im_k), axis equal
-%
-%    % Calcul de la différence entre les 2 images
-%    td = td + 1;
-%    differenceSVD(td) = sqrt(sum(sum((I-Im_k).^2)));
-%    pause
-%end
-%
-%% Figure des différences entre image réelle et image reconstruite
-%ti = ti+1;
-%figure(ti)
-%hold on
-%plot(inter, differenceSVD, 'rx')
-%ylabel('RMSE')
-%xlabel('rank k')
-%pause
-%
-%
+%vecteur pour stocker la différence entre l'image et l'image reconstruite
+inter = 1:40:(200+40);
+inter(end) = 200;
+differenceSVD = zeros(size(inter,2), 1);
+
+% images reconstruites en utilisant de 1 à 200 vecteurs (avec un pas de 40)
+ti = 0;
+td = 0;
+for k = inter
+
+   % Calcul de l'image de rang k
+   Im_k = U(:, 1:k)*S(1:k, 1:k)*V(:, 1:k)';
+
+   % Affichage de l'image reconstruite
+   ti = ti+1;
+   figure(ti)
+   colormap('gray')
+   imagesc(Im_k), axis equal
+
+   % Calcul de la différence entre les 2 images
+   td = td + 1;
+   differenceSVD(td) = sqrt(sum(sum((I-Im_k).^2)));
+   pause
+end
+
+% Figure des différences entre image réelle et image reconstruite
+ti = ti+1;
+figure(ti)
+hold on
+plot(inter, differenceSVD, 'rx')
+ylabel('RMSE')
+xlabel('rank k')
+pause
+close all
+
+
 % Plugger les différentes méthodes : eig, puissance itérée et les 4 versions de la "subspace iteration method"
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % QUELQUES VALEURS PAR DÉFAUT DE PARAMÈTRES,
 % VALEURS QUE VOUS POUVEZ/DEVEZ FAIRE ÉVOLUER
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % tolérance
 eps = 1e-8;
@@ -86,42 +87,30 @@ puiss = 1;
 k = 100 % utiliser trace de M ici
 
 % calcul des couples propres
-M = I * I';
-%[val_p, vect_p, ~, ~, ~] = eigen_2024(1,p,10,k,eps,maxit,percentage,puiss,0);
-%[val_p, vect_p] = eig(M);
-[val_p, vect_p, ~,~,~,~] = subspace_iter_v1( M, search_space, percentage, eps, maxit );
-
-val_p=abs(val_p);
-[val_p,indices] = sort(val_p,'descend');
-vect_p = vect_p(indices);
+M = I' * I;
+[Vi, Val, n_ev, it, itv, flag] = subspace_iter_v2(M, search_space, percentage, puiss ,eps, maxit);
 
 % calcul des valeurs singulières
-sigma = diag(sqrt(val_p(:, 1:k)));
-u = vect_p(:, 1:k);
+
+sing_val = sqrt(Val);
 
 % calcul de l'autre ensemble de vecteurs
-v = (I' * u)./sigma(1,:);
-
-
-% calcul des meilleures approximations de rang faible
+Ui = I * Vi / sing_val;
 
 
 
 % vecteur pour stocker la différence entre l'image et l'image reconstruite
-inter = 1:5:k;
-
+inter = 1:20:(100);
 difference = zeros(size(inter,2), 1);
-
-% images reconstruites en utilisant de 1 à 200 vecteurs (avec un pas de 40)
 ti = 0;
 td = 0;
-s= diag(sigma);
+
+
+% calcul des meilleures approximations de rang faible
 for i = inter
 
     % Calcul de l'image de rang k
-%    Im_k = U(:, 1:k)*S(1:k, 1:k)*V(:, 1:k)';
-
-    I_k = u(:, 1:i)* s(1:i, 1:i) * v(:, 1:i)';
+    I_k = Ui(:, 1:i)*sing_val(1:i, 1:i)*Vi(:, 1:i)';
 
     % Affichage de l'image reconstruite
     ti = ti+1;
@@ -131,8 +120,8 @@ for i = inter
 
     % Calcul de la différence entre les 2 images
     td = td + 1;
-    difference(td) = sqrt(sum(sum((I-I_k).^2)))
-    %pause
+    difference(td) = sqrt(sum(sum((I-I_k).^2)));
+    pause
 end
 
 % Figure des différences entre image réelle et image reconstruite
