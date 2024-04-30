@@ -237,3 +237,12 @@ loop("repeat until",$"PercentReached" > "PercentTrace" or  n_"ev" = m or k > "Ma
     stmt()[_Convergence analysis step_: save eigenpairs that converged and update _PercentReached_]
 )),))
 }
+$V_k$ is of size $(p,k)$
+
+==
+#let methods = ("eig", "power", "subspace_iter0", "subspace_iter1", "subspace_iter2")
+
+#grid(columns: 2, gutter: 5pt, ..methods.map(m =>
+figure(caption: m + " method")[
+  #image("./assets/" + m + "_differences.svg", width: 110%)
+]))
