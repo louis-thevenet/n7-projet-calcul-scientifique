@@ -8,8 +8,8 @@
   //subtitle: "Groupe EF06",
   toc: false,
 )
-
 =
+==
 
 #figure(caption: "Execution time for different sizes and types of matrices")[
 #table(
@@ -72,7 +72,7 @@
 We can see that the `power_v11` algorithm is generally slower than the `eigen`
 function especially for the type 2 and 4 matrices.
 
-=
+==
 
 #figure(caption: "Inner loop of the new algorithm")[
 #sourcecode()[
@@ -152,30 +152,30 @@ end
 We can see that the `power_v12` algorithm is globally faster than the
 `power_v11`.
 
-=
+==
 The main drawback of the deflated power method is the numerous matrix-vector
 products required to compute the eigenvectors as well as the fact that each
 iteration compute only one eigenvalue which can be slow if a lot of eigenvalues
 are desired.
 
-=
+==
 If we apply Algorithm 1 to $m$ vectors, there is no reason for the columns of $V$ to
 converge to a base. Each vector will converge toward a different projection of
 the dominant eigenvalue.
 
-=
+==
 In Algorithm 2, the matrix $H$ is a smaller matrix, with dimension $n times m$,
 therefore, even for larger matrices $A$, computing the spectral decomposition of $H$ will
 not be computionally expensive.
 
-=
+==
 // $Sigma_k$ is of size $(k,k)$
 
 // $U_k$ is of size $(q,k)$
 
 // $V_k$ is of size $(p,k)$
 
-=
+==
 
 #{
   let var(name) = for n in name [#n]
@@ -237,8 +237,8 @@ loop("repeat until",$"PercentReached" > "PercentTrace" or  n_"ev" = m or k > "Ma
     stmt()[_Convergence analysis step_: save eigenpairs that converged and update _PercentReached_]
 )),))
 }
-$V_k$ is of size $(p,k)$
 
+=
 ==
 #let methods = ("eig", "power", "subspace_iter0", "subspace_iter1", "subspace_iter2")
 
