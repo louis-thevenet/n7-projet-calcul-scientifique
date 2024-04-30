@@ -8,8 +8,9 @@
   //subtitle: "Groupe EF06",
   toc: false,
 )
+
 =
-==
+
 #figure(caption: "Execution time for different sizes and types of matrices")[
 #table(
   columns: 4,
@@ -71,11 +72,11 @@
 We can see that the `power_v11` algorithm is generally slower than the `eigen`
 function especially for the type 2 and 4 matrices.
 
-==
+=
 
 #figure(caption: "Inner loop of the new algorithm")[
 #sourcecode()[
-```m
+```matlab
 nb_it = 1;
 norme = norm(beta*v - z, 2)/norm(beta,2);
 
@@ -151,26 +152,88 @@ end
 We can see that the `power_v12` algorithm is globally faster than the
 `power_v11`.
 
-==
+=
 The main drawback of the deflated power method is the numerous matrix-vector
 products required to compute the eigenvectors as well as the fact that each
 iteration compute only one eigenvalue which can be slow if a lot of eigenvalues
 are desired.
 
-==
+=
 If we apply Algorithm 1 to $m$ vectors, there is no reason for the columns of $V$ to
 converge to a base. Each vector will converge toward a different projection of
 the dominant eigenvalue.
 
-==
+=
 In Algorithm 2, the matrix $H$ is a smaller matrix, with dimension $n times m$,
 therefore, even for larger matrices $A$, computing the spectral decomposition of $H$ will
 not be computionally expensive.
 
 =
-==
-$Sigma_k$ is of size $(k,k)$
+// $Sigma_k$ is of size $(k,k)$
 
-$U_k$ is of size $(q,k)$
+// $U_k$ is of size $(q,k)$
 
-$V_k$ is of size $(p,k)$
+// $V_k$ is of size $(p,k)$
+
+=
+
+#{
+  let var(name) = for n in name [#n]
+  let ident(lines, level) = {
+    for l in lines {
+      if (l.len() == 1 and type(l.at(0)) != "array") {
+        (h(level) + l.at(0),)
+      } else if (l.len() == 2 and type(l.at(0)) != "array") {
+        (h(level) + l.at(0), ..ident(l.at(1), level + 1em))
+      } else {
+        ident(l, level + 1em)
+      }
+    }
+  }
+  let stmt(statement) = {
+    (statement,)
+  }
+  let fn(name, content) = {
+    enum(numbering: "1:", strong[function ] + smallcaps[#name], ..ident(content, 1em))
+  }
+  let assign(name, content) = {
+    ($#name arrow.l$ + " " + content,)
+  }
+  let loop(loop_type, condition, content) = {
+    (strong(loop_type) + " " + condition + " ", content,)
+  }
+  let cond(cond_type, condition, content) = {
+    (strong(cond_type) + " " + condition + " " + strong("then"), content)
+  }
+
+  let anglelr(content) = {
+    $lr(angle.l #content angle.r)$
+  }
+
+  let input(content) = {
+    (strong("Input :") + " " + content,)
+  }
+  let output(content) = {
+     (strong("Output :") + " " + content,)
+   }
+
+let comment(content) = {
+     (content,)
+   }
+
+
+  fn("Subspace iter v1 (Raleigh-Ritz projection)", (
+
+    input($A in RR^(n times n), epsilon, "MaxIter", "PercentTrace"$),
+    output($n_"ev"$+" dominant eigenvectors "+ $V_"out"$+" and the corresponding eigenvalues "+$Lambda_"out"$),
+
+    comment()[Generate an initial set of m orthonormal vectors $V  in RR^(n times m)$; $k = 0$; $"PercentReached" = 0$],
+
+loop("repeat until",$"PercentReached" > "PercentTrace" or  n_"ev" = m or k > "MaxIter"$, (
+    assign(var("k"), $k + 1$),
+    stmt("Compute "+$Y$ +" such that "+$Y=A dot V$),
+    assign("V", "orthonormalisation of the columns of "+$Y$),
+    stmt()[_Rayleigh-Ritz projection_ applied on matrix $A$ and orthonormal vectors $V$],
+    stmt()[_Convergence analysis step_: save eigenpairs that converged and update _PercentReached_]
+)),))
+}
