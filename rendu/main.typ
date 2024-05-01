@@ -278,7 +278,10 @@ loop("repeat until",$"PercentReached" > "PercentTrace" or  n_"ev" = m or k > "Ma
   [10],
 )
 
-When increasing the valu of p to compute $A^p$ in `subspace_iter2`, the number of flops to compute the results is : Flops(`iter2`) $tilde.eq "Flops"("iter2")/p$.
+#let flops(param) = $op("Flops")(#param)$
+#let iter2 = `iter2`
+
+When increasing the valu of p to compute $A^p$ in `subspace_iter2`, the number of flops to compute the results is : Flops(`iter2`) $tilde.eq #flops(iter2) /p$.
 =
 ==
 #let methods = ("eig", "power", "subspace_iter0", "subspace_iter1", "subspace_iter2")
