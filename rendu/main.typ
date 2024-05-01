@@ -238,6 +238,29 @@ loop("repeat until",$"PercentReached" > "PercentTrace" or  n_"ev" = m or k > "Ma
 )),))
 }
 
+==
+
+==
+
+===
+
+#table(
+  columns: 6,
+  [Matrix dimension],
+  [Matrix type],
+  [Exec. time for `subspace_iter0`, (s)],
+  [Exec. time for `subspace_iter1`, (s)],
+  [Exec. time for `subspace_iter2`, (s)],
+  [p],
+  [$200 times 200$],
+  [Type 1],
+  [1.246e+01],
+  [2.500e+00],
+  [2.210e+00],
+  [2],
+  
+)
+
 =
 ==
 #let methods = ("eig", "power", "subspace_iter0", "subspace_iter1", "subspace_iter2")
