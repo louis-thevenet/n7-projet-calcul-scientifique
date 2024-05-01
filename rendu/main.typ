@@ -282,6 +282,11 @@ loop("repeat until",$"PercentReached" > "PercentTrace" or  n_"ev" = m or k > "Ma
 #let iter2 = `iter2`
 
 When increasing the valu of p to compute $A^p$ in `subspace_iter2`, the number of flops to compute the results is : Flops(`iter2`) $tilde.eq #flops(iter2) /p$.
+
+==
+
+==
+By freezing the converged columns, the algorithm will not have to recalculate them everytime. Which means that the accuracy for the eigenpairs will be more equal. The first and last will have the same approximate size.
 =
 ==
 #let methods = ("eig", "power", "subspace_iter0", "subspace_iter1", "subspace_iter2")
