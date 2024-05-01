@@ -53,7 +53,7 @@ fprintf('Qualité des valeurs propres (par rapport au spectre de la matrice) = [
 
 
 % décommentez pour visualiser la qualité de chaque eigenpair ∥A · v − β · v∥/|β| (question 11)
-qv
+% qv
 
 % méthode de calcul
 v = 2; % subspace iteration v2
@@ -75,4 +75,24 @@ fprintf('Qualité des valeurs propres (par rapport au spectre de la matrice) = [
 
 
 % décommentez pour visualiser la qualité de chaque eigenpair ∥A · v − β · v∥/|β| (question 11)
-qv
+% qv
+
+% méthode de calcul
+v = 3; % subspace iteration v2
+
+% taille du sous-espace (V1, v2, v3)
+m = 20;
+
+% pourcentage de la trace que l'on veut atteindre (v1, v2, v3)
+percentage = .1;
+
+% Acceleration with p products of A^p
+p = 10;
+
+
+genere = 0;
+[W, V, flag, q, qv] = eigen_2024(imat, n, v, m, eps, maxit, percentage, [], genere);
+
+fprintf('Qualité des couples propres (par rapport au critère d''arrêt) = [%0.3e , %0.3e]\n', min(qv), max(qv));
+fprintf('Qualité des valeurs propres (par rapport au spectre de la matrice) = [%0.3e , %0.3e] \n', min(q), max(q));
+
