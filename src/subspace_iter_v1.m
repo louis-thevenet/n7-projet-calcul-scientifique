@@ -48,7 +48,7 @@ function [ V, D, n_ev, it, itv, flag ] = subspace_iter_v1( A, m, percentage, eps
     Vr = randn(n, m);
     Vr = mgs(Vr);
 
-    % Repeat until PercentReached > PercentTrace or nev = m or k > MaxIter 
+    %% Repeat until PercentReached > PercentTrace or nev = m or k > MaxIter 
     while (~conv && k < maxit)
         
         k = k+1;
