@@ -285,8 +285,12 @@ When increasing the valu of p to compute $A^p$ in `subspace_iter2`, the number o
 
 ==
 
+The accuracy differs because eigenpairs are computed from the columns of new matrix V. However, the firsts columns are recalculated at each step, that will lead to have different approximate size for the new eigenpairs computed. By recomputing them, the quality reduces and diverge from the approximate size of the first one. 
+
 ==
+
 By freezing the converged columns, the algorithm will not have to recalculate them everytime. Which means that the accuracy for the eigenpairs will be more equal. The first and last will have the same approximate size.
+
 =
 ==
 #let methods = ("eig", "power", "subspace_iter0", "subspace_iter1", "subspace_iter2")
