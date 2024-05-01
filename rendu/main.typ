@@ -242,7 +242,7 @@ loop("repeat until",$"PercentReached" > "PercentTrace" or  n_"ev" = m or k > "Ma
 
 ==
 
-===
+==
 
 #table(
   columns: 6,
