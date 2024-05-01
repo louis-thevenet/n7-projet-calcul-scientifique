@@ -54,9 +54,8 @@ function [ V, D, n_ev, it, itv, flag ] = subspace_iter_v2( A, m, percentage, p, 
     while (~conv && k < maxit)
         
         k = k+1;
-        A = A^p;
         %% Y <- A^p*V
-        Y = A*Vr;
+        Y = (A^p)*Vr;
         %% orthogonalisation
         Vr = mgs(Y);
         
