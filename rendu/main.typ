@@ -5,7 +5,7 @@
   title: "Projet de Calcul Scientifique",
   authors: ("THEVENET Louis", "SABLAYROLLES Guillaume",),
   date: "Décembre 2023",
-  //subtitle: "Groupe EF06",
+  subtitle: "Groupe EF06",
   toc: false,
 )
 =
@@ -254,20 +254,21 @@ not be computionally expensive.
 
 ==
 
-We can precompute the product $A^p$
+There is $A in R^(n times n)$, a square matrix, for $A times A$ there are $OO(n³)$ Flops. Since repeating p times the operation, there are $OO(p times n³)$ Flops to compute $A^p$.
+After, there is $V in R^(n times m)$ which leads to $OO(p times n³ times m)$ Flops to compute $A^p times V$.
 
 ==
 
 ==
 
-#figure(caption: "Before precomputing")[
+#figure(caption: "After computing")[
 #table(
   columns: 6,
   [Matrix dimension],
   [Matrix type],
-  [Flops for `subspace_iter0`],
-  [Flops for `subspace_iter1`],
-  [Flops for `subspace_iter2`],
+  [Iterations for `subspace_iter0`],
+  [Iterations for `subspace_iter1`],
+  [Iterations for `subspace_iter2`],
   [p ($A^p$)],
   [$200 times 200$],
   [Type 1],
@@ -296,51 +297,13 @@ We can precompute the product $A^p$
 )
 ]
 
-#line(stroke: 15pt + red, length: 100%)
-#text(weight: "extrabold", size: 35pt)[C'EST FAUX]
 
-#figure(caption: "After precomputing")[
-#table(
-  columns: 6,
-  [Matrix dimension],
-  [Matrix type],
-  [Flops for `subspace_iter0`],
-  [Flops for `subspace_iter1`],
-  [Flops for `subspace_iter2`],
-  [p ($A^p$)],
-  [$200 times 200$],
-  [Type 1],
-  [2309],
-  [263],
-  [132],
-  [2],
-  [$200 times 200$],
-  [Type 1],
-  [2309],
-  [263],
-  [88],
-  [3],
-  [$200 times 200$],
-  [Type 1],
-  [2309],
-  [263],
-  [53],
-  [5],
-  [$200 times 200$],
-  [Type 1],
-  [2309],
-  [263],
-  [27],
-  [10],
-)
-]
-#line(stroke: 15pt + red, length: 100%)
-
-#let flops(param) = $op("Flops")(#param)$
+#let flops(param) = $op("Iterations")(#param)$
 #let iter2 = `iter2`
 
 When increasing the value of p to compute $A^p$ in `subspace_iter2`, the number
-of flops to compute the results is : Flops(`iter2`) $tilde.eq #flops(iter2) /p$.
+of flops to compute the results is : Iterations(`iter2`) $tilde.eq #flops(iter2) /p$.
+This is due to the eigenvalues of $A^p$ raised to the p power also. Increasing the conditionment of the matrix leading to a faster convergence.
 
 ==
 
@@ -383,11 +346,6 @@ $V_k$ is of size $(p,k)$
 
 #let variations = ("_differences": display-variations($10^(-8)$, $10000$, $400$, $0.995$, $1$), "_differences2": display-variations($10^(-8)$, $7500$, $600$, $0.995$, $2$), "_differences3": display-variations($10^(-8)$, $3000$, $500$, $0.995$, $1$)
 )
-
-
-#line(stroke: 15pt + red, length: 100%)
-#text(weight: "extrabold", size: 35pt)[MANQUE DES COMMENTAIRES]
-#line(stroke: 15pt + red, length: 100%)
 
 #for variation in variations.keys() {
   grid(columns: 2, gutter: 5pt, variations.at(variation), ..methods.map(m =>
