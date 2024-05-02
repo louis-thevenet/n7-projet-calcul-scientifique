@@ -319,6 +319,12 @@ By freezing the converged columns, the algorithm will not have to recalculate
 them everytime. Which means that the accuracy for the eigenpairs will be more
 equal. The first and last will have the same approximate size.
 
+==
+
+==
+
+==
+
 =
 
 ==
