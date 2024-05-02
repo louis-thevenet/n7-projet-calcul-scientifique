@@ -337,3 +337,22 @@ figure(caption: m + " method")[
 figure(caption: m + " method")[
   #image("./assets/" + m + "_differences2.svg", width: 110%)
 ]))
+
+#table(
+  columns: 5,
+  [eps],
+  [maxit],
+  [search_space],
+  [percentage],
+  [puiss],
+  [$10^(-8)$],
+  [3000],
+  [500],
+  [0.995],
+  [1]
+  )
+
+#grid(columns: 2, gutter: 5pt, ..methods.map(m =>
+figure(caption: m + " method")[
+  #image("./assets/" + m + "_differences3.svg", width: 110%)
+]))

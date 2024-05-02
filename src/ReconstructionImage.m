@@ -69,16 +69,16 @@ l = min(p,q);
 % tolérance
 eps = 1e-8;
 % nombre d'itérations max pour atteindre la convergence
-maxit = 7500;
+maxit = 3000;
 
 % taille de l'espace de recherche (m)
-search_space = 600;
+search_space = 500;
 
 % pourcentage que l'on se fixe
 percentage = 0.995;
 
 % p pour les versions 2 et 3 (attention p déjà utilisé comme taille)
-puiss = 2;
+puiss = 1;
 
 %%%%%%%%%%%%%
 % À COMPLÉTER
@@ -168,7 +168,7 @@ for method =1:length(to_test)
     plot(inter, difference, 'rx')
     ylabel('2')
     xlabel('2')
-    plot2svg(nom_method + '_differences2.svg', f)
+    plot2svg(nom_method + '_differences3.svg', f)
     %pause
 end
 
