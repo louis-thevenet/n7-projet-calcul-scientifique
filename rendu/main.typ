@@ -189,7 +189,11 @@ not be computionally expensive.
     (statement,)
   }
   let fn(name, content) = {
-    enum(numbering: "1:", strong[function ] + smallcaps[#name], ..ident(content, 1em))
+    enum(
+      numbering: "1:",
+      strong[function ] + smallcaps[#name],
+      ..ident(content, 1em),
+    )
   }
   let assign(name, content) = {
     ($#name arrow.l$ + " " + content,)
@@ -209,43 +213,61 @@ not be computionally expensive.
     (strong("Input :") + " " + content,)
   }
   let output(content) = {
-     (strong("Output :") + " " + content,)
-   }
+    (strong("Output :") + " " + content,)
+  }
 
-let comment(content) = {
-     (content,)
-   }
+  let comment(content) = {
+    (content,)
+  }
 
+  let line(n) = {
+    text(stroke: red, weight: "light")[(line #n)]
+  }
 
-  fn("Subspace iter v1 (Raleigh-Ritz projection)", (
-
-    input($A in RR^(n times n), epsilon, "MaxIter", "PercentTrace"$),
-    output($n_"ev"$+" dominant eigenvectors "+ $V_"out"$+" and the corresponding eigenvalues "+$Lambda_"out"$),
-
-    comment()[Generate an initial set of m orthonormal vectors $V  in RR^(n times m)$; $k = 0$; $"PercentReached" = 0$],
-
-loop("repeat until",$"PercentReached" > "PercentTrace" or  n_"ev" = m or k > "MaxIter"$, (
-    assign(var("k"), $k + 1$),
-    stmt("Compute "+$Y$ +" such that "+$Y=A dot V$),
-    assign("V", "orthonormalisation of the columns of "+$Y$),
-    stmt()[_Rayleigh-Ritz projection_ applied on matrix $A$ and orthonormal vectors $V$],
-    stmt()[_Convergence analysis step_: save eigenpairs that converged and update _PercentReached_]
-)),))
+  fn(
+    "Subspace iter v1 (Raleigh-Ritz projection)",
+    (
+      input($A in RR^(n times n), epsilon, "MaxIter", "PercentTrace"$),
+      output(
+        $n_"ev"$ + " dominant eigenvectors " + $V_"out"$ + " and the corresponding eigenvalues " + $Lambda_"out"$,
+      ),
+      comment(
+        )[Generate an initial set of m orthonormal vectors $V in RR^(n times m)$; $k = 0$; $"PercentReached" = 0$],
+      loop(
+        "repeat until ",
+        line(52) + $" PercentReached" > "PercentTrace" or n_"ev" = m or k > "MaxIter"$,
+        (
+          assign(var("k"), $k + 1$),
+          stmt("Compute " + $Y$ + " such that " + $Y=A dot V$),
+          assign("V", "orthonormalisation of the columns of " + $Y$),
+          stmt(
+            )[_Rayleigh-Ritz projection_ #line(60) applied on matrix $A$ and orthonormal
+            vectors $V$],
+          stmt(
+            )[_Convergence analysis step_ #line(70) : save eigenpairs that converged and
+            update _PercentReached_],
+        ),
+      ),
+    ),
+  )
 }
 
 ==
 
-==
+We can precompute the product $A^p$
 
 ==
 
+==
+
+#figure(caption: "Before precomputing")[
 #table(
   columns: 6,
   [Matrix dimension],
   [Matrix type],
   [Flops for `subspace_iter0`],
   [Flops for `subspace_iter1`],
-  [Flops  for `subspace_iter2`],
+  [Flops for `subspace_iter2`],
   [p ($A^p$)],
   [$200 times 200$],
   [Type 1],
@@ -265,26 +287,74 @@ loop("repeat until",$"PercentReached" > "PercentTrace" or  n_"ev" = m or k > "Ma
   [263],
   [53],
   [5],
-   [$200 times 200$],
+  [$200 times 200$],
   [Type 1],
   [2309],
   [263],
   [27],
   [10],
 )
+]
+
+#line(stroke: 15pt + red, length: 100%)
+#text(weight: "extrabold", size: 35pt)[C'EST FAUX]
+
+#figure(caption: "After precomputing")[
+#table(
+  columns: 6,
+  [Matrix dimension],
+  [Matrix type],
+  [Flops for `subspace_iter0`],
+  [Flops for `subspace_iter1`],
+  [Flops for `subspace_iter2`],
+  [p ($A^p$)],
+  [$200 times 200$],
+  [Type 1],
+  [2309],
+  [263],
+  [132],
+  [2],
+  [$200 times 200$],
+  [Type 1],
+  [2309],
+  [263],
+  [88],
+  [3],
+  [$200 times 200$],
+  [Type 1],
+  [2309],
+  [263],
+  [53],
+  [5],
+  [$200 times 200$],
+  [Type 1],
+  [2309],
+  [263],
+  [27],
+  [10],
+)
+]
+#line(stroke: 15pt + red, length: 100%)
 
 #let flops(param) = $op("Flops")(#param)$
 #let iter2 = `iter2`
 
-When increasing the valu of p to compute $A^p$ in `subspace_iter2`, the number of flops to compute the results is : Flops(`iter2`) $tilde.eq #flops(iter2) /p$.
+When increasing the value of p to compute $A^p$ in `subspace_iter2`, the number
+of flops to compute the results is : Flops(`iter2`) $tilde.eq #flops(iter2) /p$.
 
 ==
 
-The accuracy differs because eigenpairs are computed from the columns of new matrix V. However, the firsts columns are recalculated at each step, that will lead to have different approximate size for the new eigenpairs computed. By recomputing them, the quality reduces and diverge from the approximate size of the first one. 
+The accuracy differs because eigenpairs are computed from the columns of new
+matrix V. However, the firsts columns are recalculated at each step, that will
+lead to have different approximate size for the new eigenpairs computed. By
+recomputing them, the quality reduces and diverge from the approximate size of
+the first one.
 
 ==
 
-By freezing the converged columns, the algorithm will not have to recalculate them everytime. Which means that the accuracy for the eigenpairs will be more equal. The first and last will have the same approximate size.
+By freezing the converged columns, the algorithm will not have to recalculate
+them everytime. Which means that the accuracy for the eigenpairs will be more
+equal. The first and last will have the same approximate size.
 
 =
 
@@ -295,64 +365,33 @@ $U_k$ is of size $(q,k)$
 
 $V_k$ is of size $(p,k)$
 
-
 ==
 #let methods = ("eig", "power", "subspace_iter0", "subspace_iter1", "subspace_iter2")
-
-#table(
-  columns: 5,
+#let display-variations(eps, maxit, search-space, percentage, puiss) = table(
+  columns: 2,
   [eps],
+  [#eps],
   [maxit],
+  [#maxit],
   [search_space],
+  [#search-space],
   [percentage],
+  [#percentage],
   [puiss],
-  [$10^(-8)$],
-  [10000],
-  [400],
-  [0.995],
-  [1]
-  )
+  [#puiss],
+)
 
-#grid(columns: 2, gutter: 5pt, ..methods.map(m =>
-figure(caption: m + " method")[
-  #image("./assets/" + m + "_differences.svg", width: 110%)
-]))
+#let variations = ("_differences": display-variations($10^(-8)$, $10000$, $400$, $0.995$, $1$), "_differences2": display-variations($10^(-8)$, $7500$, $600$, $0.995$, $2$), "_differences3": display-variations($10^(-8)$, $3000$, $500$, $0.995$, $1$)
+)
 
 
-#table(
-  columns: 5,
-  [eps],
-  [maxit],
-  [search_space],
-  [percentage],
-  [puiss],
-  [$10^(-8)$],
-  [7500],
-  [600],
-  [0.995],
-  [2]
-  )
+#line(stroke: 15pt + red, length: 100%)
+#text(weight: "extrabold", size: 35pt)[MANQUE DES COMMENTAIRES]
+#line(stroke: 15pt + red, length: 100%)
 
-#grid(columns: 2, gutter: 5pt, ..methods.map(m =>
-figure(caption: m + " method")[
-  #image("./assets/" + m + "_differences2.svg", width: 110%)
-]))
-
-#table(
-  columns: 5,
-  [eps],
-  [maxit],
-  [search_space],
-  [percentage],
-  [puiss],
-  [$10^(-8)$],
-  [3000],
-  [500],
-  [0.995],
-  [1]
-  )
-
-#grid(columns: 2, gutter: 5pt, ..methods.map(m =>
-figure(caption: m + " method")[
-  #image("./assets/" + m + "_differences3.svg", width: 110%)
-]))
+#for variation in variations.keys() {
+  grid(columns: 2, gutter: 5pt, variations.at(variation), ..methods.map(m =>
+  figure(caption: m + " method")[
+    #image("./assets/" + m + variation + ".svg", width: 110%)
+  ]))
+}

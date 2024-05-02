@@ -44,30 +44,29 @@ function [ V, D, n_ev, it, itv, flag ] = subspace_iter_v1( A, m, percentage, eps
     % indicateur de la convergence
     conv = 0;
 
-    %% Initial set of m orthonormal vectors
+    % on génère un ensemble initial de m vecteurs orthogonaux
     Vr = randn(n, m);
     Vr = mgs(Vr);
 
-    %% Repeat until PercentReached > PercentTrace or nev = m or k > MaxIter 
+    % rappel : conv = (eigsum >= trace) | (nb_c == m)
     while (~conv && k < maxit)
         
         k = k+1;
         %% Y <- A*V
         Y = A*Vr;
-        %% orthonormalisation of Y
+        %% orthogonalisation
         Vr = mgs(Y);
         
-        %% Rayleigh-Ritz projection
+        %% Projection de Rayleigh-Ritz
         [Wr, Vr] = rayleigh_ritz_projection(A, Vr);
         
-        %% Which vectors have converged for this step
+        %% Quels vecteurs ont convergé à cette itération
         analyse_cvg_finie = 0;
-        %% Number of converged vector for this step
+        % nombre de vecteurs ayant convergé à cette itération
         nbc_k = 0;
-        %% nb_c, last converged vector for last step
+        % nb_c est le dernier vecteur à avoir convergé à l'itération précédente
         i = nb_c + 1;
         
-        %% Convergence analysis step
         while(~analyse_cvg_finie)
             % tous les vecteurs de notre sous-espace ont convergé
             % on a fini (sans avoir obtenu le pourcentage)

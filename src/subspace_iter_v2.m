@@ -1,11 +1,11 @@
 % version améliorée de la méthode de l'espace invariant (v2)
-% avec utilisation de la projection de Raleigh-Ritz 
+% avec utilisation de la projection de Raleigh-Ritz
 % avec une accélération bloc
 
 % Données
 % A          : matrice dont on cherche des couples propres
 % m          : taille maximale de l'espace invariant que l'on va utiliser
-% percentage : pourcentage recherché de la trace 
+% percentage : pourcentage recherché de la trace
 % p          : nombre de produits Y = A^p . V
 % eps        : seuil pour déterminer si un vecteur de l'espace invariant a convergé
 % maxit      : nombre maximum d'itérations de la méthode
@@ -51,24 +51,26 @@ function [ V, D, n_ev, it, itv, flag ] = subspace_iter_v2( A, m, percentage, p, 
     Vr = mgs(Vr);
 
     % rappel : conv = (eigsum >= trace) | (nb_c == m)
+
+    Ap = A^p;
     while (~conv && k < maxit)
-        
+
         k = k+1;
         %% Y <- A^p*V
-        Y = (A^p)*Vr;
+        Y = (Ap)*Vr;
         %% orthogonalisation
         Vr = mgs(Y);
-        
+
         %% Projection de Rayleigh-Ritz
         [Wr, Vr] = rayleigh_ritz_projection(A, Vr);
-        
+
         %% Quels vecteurs ont convergé à cette itération
         analyse_cvg_finie = 0;
         % nombre de vecteurs ayant convergé à cette itération
         nbc_k = 0;
         % nb_c est le dernier vecteur à avoir convergé à l'itération précédente
         i = nb_c + 1;
-        
+
         while(~analyse_cvg_finie)
             % tous les vecteurs de notre sous-espace ont convergé
             % on a fini (sans avoir obtenu le pourcentage)
@@ -76,11 +78,11 @@ function [ V, D, n_ev, it, itv, flag ] = subspace_iter_v2( A, m, percentage, p, 
                 analyse_cvg_finie = 1;
             else
                 % est-ce que le vecteur i a convergé
-                
+
                 % calcul de la norme du résidu
                 aux = A*Vr(:,i) - Wr(i)*Vr(:,i);
                 res = sqrt(aux'*aux);
-                
+
                 if(res >= eps*normA)
                     % le vecteur i n'a pas convergé,
                     % on sait que les vecteurs suivants n'auront pas convergé non plus
@@ -92,12 +94,12 @@ function [ V, D, n_ev, it, itv, flag ] = subspace_iter_v2( A, m, percentage, p, 
                     nbc_k = nbc_k + 1;
                     % on le stocke ainsi que sa valeur propre
                     W(i) = Wr(i);
-                    
+
                     itv(i) = k;
-                    
+
                     % on met à jour la somme des valeurs propres
                     eigsum = eigsum + W(i);
-                    
+
                     % si cette valeur propre permet d'atteindre le pourcentage
                     % on a fini
                     if(eigsum >= vtrace)
@@ -109,15 +111,15 @@ function [ V, D, n_ev, it, itv, flag ] = subspace_iter_v2( A, m, percentage, p, 
                 end
             end
         end
-        
+
         % on met à jour le nombre de vecteurs ayant convergés
         nb_c = nb_c + nbc_k;
-        
+
         % on a convergé dans l'un de ces deux cas
         conv = (nb_c == m) | (eigsum >= vtrace);
-        
+
     end
-    
+
     if(conv)
         % mise à jour des résultats
         n_ev = nb_c;
