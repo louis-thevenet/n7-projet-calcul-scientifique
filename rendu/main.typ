@@ -169,11 +169,6 @@ therefore, even for larger matrices $A$, computing the spectral decomposition of
 not be computionally expensive.
 
 ==
-// $Sigma_k$ is of size $(k,k)$
-
-// $U_k$ is of size $(q,k)$
-
-// $V_k$ is of size $(p,k)$
 
 ==
 
@@ -292,10 +287,53 @@ The accuracy differs because eigenpairs are computed from the columns of new mat
 By freezing the converged columns, the algorithm will not have to recalculate them everytime. Which means that the accuracy for the eigenpairs will be more equal. The first and last will have the same approximate size.
 
 =
+
+==
+$Sigma_k$ is of size $(k,k)$
+
+$U_k$ is of size $(q,k)$
+
+$V_k$ is of size $(p,k)$
+
+
 ==
 #let methods = ("eig", "power", "subspace_iter0", "subspace_iter1", "subspace_iter2")
+
+#table(
+  columns: 5,
+  [eps],
+  [maxit],
+  [search_space],
+  [percentage],
+  [puiss],
+  [$10^(-8)$],
+  [10000],
+  [400],
+  [0.995],
+  [1]
+  )
 
 #grid(columns: 2, gutter: 5pt, ..methods.map(m =>
 figure(caption: m + " method")[
   #image("./assets/" + m + "_differences.svg", width: 110%)
+]))
+
+
+#table(
+  columns: 5,
+  [eps],
+  [maxit],
+  [search_space],
+  [percentage],
+  [puiss],
+  [$10^(-8)$],
+  [7500],
+  [600],
+  [0.995],
+  [2]
+  )
+
+#grid(columns: 2, gutter: 5pt, ..methods.map(m =>
+figure(caption: m + " method")[
+  #image("./assets/" + m + "_differences2.svg", width: 110%)
 ]))
