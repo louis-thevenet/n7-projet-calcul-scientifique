@@ -360,3 +360,8 @@ Despite this error, we can see that using different method or changing the param
 In the first part when reconstructing the comic, we saw that the image definition looks like more and more of the original when reconstructing it for k increasing.
 
 However, at a certain point, the RMSE tend to have little variation for some k values (less than $1/2 times 10⁴$ between $k = 60$ and $k = 80$). But what is impacted is the time for computation, taking more time when k improve.
+
+= Conclusion
+
+The RMSE is a good method to measure the reconstruction of an image after compression. All algorithms compute the same result but can take longer time to render the result.
+We may take that time in argument to choose which algorith to pick, alongside with the value for k (or other factors do not see here). 
