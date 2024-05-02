@@ -105,3 +105,4 @@ replay_pid*
 
 # Matlab
 *.mat
+src/plot2svg.m

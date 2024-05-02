@@ -107,7 +107,7 @@ for method =1:length(to_test)
 
 
         case 010
-            [ Vi, Val, n_ev, itv, flag ] = power_v11( M, search_space, percentage, eps, maxit );
+            [ Vi, Val, n_ev, itv, flag ] = power_v12( M, search_space, percentage, eps, maxit );
             nom_method = "power";
             
 
@@ -168,7 +168,7 @@ for method =1:length(to_test)
     plot(inter, difference, 'rx')
     ylabel('2')
     xlabel('2')
-    plot2svg(nom_method + '_differences.svg', f)
+    %plot2svg(nom_method + '_differences.svg', f)
     %pause
 end
 
