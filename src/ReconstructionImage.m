@@ -69,10 +69,10 @@ l = min(p,q);
 % tolérance
 eps = 1e-8;
 % nombre d'itérations max pour atteindre la convergence
-maxit = 3000;
+maxit = 10000;
 
 % taille de l'espace de recherche (m)
-search_space = 500;
+search_space = 400;
 
 % pourcentage que l'on se fixe
 percentage = 0.995;
@@ -166,9 +166,9 @@ for method =1:length(to_test)
     f = figure(method);
     
     plot(inter, difference, 'rx')
-    ylabel('2')
-    xlabel('2')
-    plot2svg(nom_method + '_differences3.svg', f)
+    ylabel("rmse");
+    xlabel('rank k')
+    plot2svg(nom_method + '_differences1.svg', f)
     %pause
 end
 

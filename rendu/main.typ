@@ -344,7 +344,7 @@ $V_k$ is of size $(p,k)$
   [#puiss],
 )
 
-#let variations = ("_differences": display-variations($10^(-8)$, $10000$, $400$, $0.995$, $1$), "_differences2": display-variations($10^(-8)$, $7500$, $600$, $0.995$, $2$), "_differences3": display-variations($10^(-8)$, $3000$, $500$, $0.995$, $1$)
+#let variations = ("_differences1": display-variations($10^(-8)$, $10000$, $400$, $0.995$, $1$), "_differences3": display-variations($10^(-8)$, $3000$, $500$, $0.995$, $1$)
 )
 
 #for variation in variations.keys() {
@@ -353,3 +353,10 @@ $V_k$ is of size $(p,k)$
     #image("./assets/" + m + variation + ".svg", width: 110%)
   ]))
 }
+
+We might had an issue when calculating the RMSE with the eig function.
+Despite this error, we can see that using different method or changing the parameter do not affect the style of the curve.
+
+In the first part when reconstructing the comic, we saw that the image definition looks like more and more of the original when reconstructing it for k increasing.
+
+However, at a certain point, the RMSE tend to have little variation for some k values (less than $1/2 times 10⁴$ between $k = 60$ and $k = 80$). But what is impacted is the time for computation, taking more time when k improve.
